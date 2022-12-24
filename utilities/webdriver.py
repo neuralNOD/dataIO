@@ -54,4 +54,4 @@ def create_chromedriver(
     # ? `driver.find_element("id, *args, **kwargs)` : selenium >= 4.7.2
     driver = webdriver.Chrome(options = chrome_options)
 
-    return driver
+    return chrome_options, driver
