@@ -9,7 +9,15 @@ The code is kept as dynamic as possible, with user inputs are to be
 decided later.
 """
 
+import warnings
 import datetime as dt # module to manipulate unix datetime
+
+# add the path to `errors` directory
+import os
+import sys
+sys.path.append(os.path.join("..", "..", "errors"))
+
+from __warnings import InProgress # noqa: F403 # pylint: disable=unused-import
 
 def create_time_blocks(block_interval : int) -> dict:
     """
@@ -19,15 +27,24 @@ def create_time_blocks(block_interval : int) -> dict:
     `dict()` or `json` that has the block number and start and end
     time for each block. Do note that there is overlapping time
     at each interval, but this is forcefully done as required by IEX.
+
+    :type  block_interval: int
+    :param block_interval: Enter the block interval in minutes, which
+                           creates the time blocks master.
     """
 
     time_blocks = {k : [] for k in [
         "time_block", # actual block number
         "start_time", # block start time, equivalent to `block * block_interval`
         "block_end_time", # the actual time when the block ends
-        "iex_block_end_time" # iex has overlapping time issues, taken care
+        "iex_block_end_time" # iex has overlapping time issues, represented as `str`
     ]}
-    num_blocks_ = int(24 * 60 / block_interval) # `block_interval` in minutes
+
+    if (24 * 60 % block_interval) != 0:
+        warnings.warn("TODO Raise Issue.", InProgress)
+        num_blocks_ = int(24 * 60 / block_interval) + 1
+    else:
+        num_blocks_ = int(24 * 60 / block_interval)
 
     init_time_ = dt.datetime(2000, 1, 1, 0, 0) # generate time from here
     for block in range(num_blocks_):
@@ -36,7 +53,11 @@ def create_time_blocks(block_interval : int) -> dict:
             init_time_ + dt.timedelta(minutes = block_interval * (block + 1)) -
             dt.timedelta(seconds = 1)
         ).time()
-        iex_block_end_time = (init_time_ + dt.timedelta(minutes = block_interval * (block + 1))).time()
+
+        if (block + 1) != num_blocks_:
+            iex_block_end_time = str((init_time_ + dt.timedelta(minutes = block_interval * (block + 1))).time())
+        else:
+            iex_block_end_time = "24:00:00"
 
         # add data to dictionary object
         for k, v in zip(time_blocks.keys(), [block + 1, start_time, block_end_time, iex_block_end_time]):
