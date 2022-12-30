@@ -66,6 +66,28 @@ def create_time_blocks(block_interval : int) -> dict:
     return time_blocks
 
 
+def create_block_range(block_interval : int, seperator : str = " - ") -> dict:
+    """
+    Create a Block Range as in IEX Data Sheets
+
+    Given a `block_interval` the function adds a parameter called
+    `block_range` which can be used to directly query and merge
+    based on IEX tables. Also, send a seperator tag used for `join`
+    command.
+    """
+
+    time_blocks = create_time_blocks(block_interval = block_interval)
+    time_blocks |= dict(block_range = [])
+
+    for block in range(int(24 * 60 / block_interval)):
+        time_blocks["block_range"].append(f"{seperator}".join(map(
+            lambda y : str(y)[:-3],
+            [time_blocks["start_time"][block], time_blocks["iex_block_end_time"][block]]
+        )))
+
+    return time_blocks
+
+
 if __name__ == "__main__":
     import json
     print(json.dumps(create_time_blocks(block_interval = 15), indent = 2, default = str))
