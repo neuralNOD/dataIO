@@ -41,6 +41,8 @@ def create_chromedriver(
                           developer mode from driver.
     """
 
+    # ! `executable_path` is not required in `selenium >= 4.7.2`
+    # TODO /fix however, this is a requirement in a previous version
     chrome_options = chromedriver.options.Options()
 
     # enable chrome options as defined by user, or get the default
@@ -53,5 +55,4 @@ def create_chromedriver(
     # ? `driver.find_element_by_id(*args, **kwargs)` : selenium < 2.3.0
     # ? `driver.find_element("id, *args, **kwargs)` : selenium >= 4.7.2
     driver = webdriver.Chrome(options = chrome_options)
-
-    return driver
+    return chrome_options, driver
