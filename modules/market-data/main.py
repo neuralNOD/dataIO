@@ -22,7 +22,7 @@ def download(report : str, driver : object, outpath : str, outfile : str = None)
 
     # set the driver with additional parameters
     driver.get(URL.format(extension = report)) # TODO dynamic setup
-    params = dict(behavior = "allow", downloadPath = os.path.join(os.getcwd(), outpath))
+    params = dict(behavior = "allow", downloadPath = outpath)
     driver.execute_cdp_cmd("Page.setDownloadBehavior", params)
 
     # read the operations involved in fetching the reports
@@ -65,6 +65,5 @@ if __name__ == "__main__":
         # controlled from this file
         download(
             report = report, driver = driver,
-            outpath = os.path.join("data")
-            # outpath = os.path.join("Market Data - Day Ahead Market (DAM)", "Market Snapshot")
+            outpath = os.path.join(os.getcwd(), "data")
         )
