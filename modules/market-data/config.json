@@ -1,0 +1,6 @@
+{
+    "market_snapshot": {
+        "default_name": "MarketMinute.xlsx",
+        "final_name": "Market_Minute_Snapshot_{date}.xlsx"
+    }
+}
