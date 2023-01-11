@@ -1,0 +1,36 @@
+# the defaule git configuration file that your system needs
+# this file is available under
+# linux : "~/home/username/.gitconfig"
+# windows : "C:\\users\\username\\.gitconfig"
+
+[user]
+  name = nxlogics
+  email = base.image@dockerfile
+
+[alias]
+  # a set of aliases, for `git` use as `git <alias>`
+  # git aliases are moved from `.bash_profile` to `.gitconfig`
+  a = add .
+  b = branch -r
+  c = commit
+  f = fetch all
+  i = init
+  l = log --oneline --graph
+  s = status --branch --short
+
+[core]
+  # https://mirrors.edge.kernel.org/pub/software/scm/git/docs/git-config.html
+  # there are many options in `[core]` and the relevant ones are defined below:
+
+  # 1. setting longpaths to true bypass the windows 260 charecter limit in path name
+  # https://stackoverflow.com/q/74399172/6623589
+  longpaths = true
+
+## `includeif` command
+# a special command to control the behavior of a particular directory
+# which is to be treated differently from the rest of the system, for example
+# the flobal username can be <username> but a directory may be defined with
+# a <seccondary-username> and the same will be respected by git operations
+# * check the `./example` for this type of convention checking
+[includeIf "gitdir:/path/to/directory"]
+  path = /path/to/directory/.gitconfig
