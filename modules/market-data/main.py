@@ -15,7 +15,8 @@ import os # miscellaneous os interfaces
 import sys # object manipulation of system
 import json # read and manipulate json objects
 import time # miscellaneous for time manipulation
-import datetime as dt # module to manipulate datetime
+import shutil # move and rename files like `mv src dst`
+import datetime as dt # module to manipulate datetime object
 
 from utils_ import * # noqa: F403 # pylint: disable:unused-import
 from webdriver import create_chromedriver
@@ -46,7 +47,7 @@ def download(report : str, driver : object, outpath : str, outfile : tuple = tup
     driver.quit() # safely close the driver, release cache
 
     # once the file is downloaded, rename the file using `os.rename`
-    os.rename(os.path.join(outpath, outfile[0]), os.path.join(outpath, outfile[1]))
+    shutil.move(os.path.join(outpath, outfile[0]), outfile[1])
     return True
 
 
@@ -77,11 +78,21 @@ if __name__ == "__main__":
         # local file system, finally the raw files are transformed
         # and loaded using a different scripts - all of this is
         # controlled from this file
+        basepath = create_dir(
+            base = config[report]["base_dir"],
+            year = date.year, month = date.month
+        )
+
         download(
             report = report, driver = driver,
             outpath = os.path.join(os.getcwd(), "data"),
             outfile = (
                 config[report]["default_name"],
-                config[report]["final_name"].format(date = f"{date.year}-{str(date.month).zfill(2)}-{str(date.day).zfill(2)}")
+                os.path.join(
+                    basepath,
+                    config[report]["final_name"].format(
+                        date = f"{date.year}-{str(date.month).zfill(2)}-{str(date.day).zfill(2)}"
+                    )
+                ) 
             ),
         )

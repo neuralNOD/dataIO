@@ -1,6 +1,7 @@
 {
     "market_snapshot": {
         "default_name": "MarketMinute.xlsx",
+        "base_dir": "E:\\database\\Indian Energy Exchange\\Market Data - Day Ahead Market (DAM)\\Market Snapshot",
         "final_name": "Market_Minute_Snapshot_{date}.xlsx"
     }
 }
