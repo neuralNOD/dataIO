@@ -1,3 +1,6 @@
 # ignore the python virtual environment, which is created with the
 # same name as that of the "submodule" i.e. `marketdata`
 marketdata/
+
+data/*
+secrets.yaml
