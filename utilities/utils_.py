@@ -14,6 +14,7 @@ List of Available `lambda` Functions and their Use Case:
                using the `tqdm` and `time.sleep(secs)` module.
 """
 
+import os
 import time
 import yaml
 
@@ -39,3 +40,26 @@ def get_secrets(filepath : str) -> dict:
         content = yaml.load(f, Loader = yaml.FullLoader)
 
     return content
+
+
+def create_dir(base : str, year : int, month : int) -> str:
+    """
+    Create a Directory Structure like `base/year/month` using OS
+
+    By default, a file is saved to a directory which is partitioned
+    like `basedir/<year>/<month>` and the month name is decorated as
+    "%m-%B" as in `dt.datetime.strftime` module.
+    """
+
+    months = {
+        1 : "JAN", 2 : "FEB", 3 : "MAR", 4 : "APR",
+        5 : "MAY", 6 : "JUN", 7 : "JUL", 8 : "AUG",
+        9 : "SEP", 10: "OCT", 11 : "NOV", 12 : "DEC"
+    }
+
+    year = str(year)
+    month = f"{str(month).zfill(2)}-{months.get(month)}"
+
+    path = os.path.join(base, year, month)
+    os.makedirs(path, exist_ok = True)
+    return path
