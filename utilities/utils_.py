@@ -49,6 +49,17 @@ def create_dir(base : str, year : int, month : int) -> str:
     By default, a file is saved to a directory which is partitioned
     like `basedir/<year>/<month>` and the month name is decorated as
     "%m-%B" as in `dt.datetime.strftime` module.
+
+    Example: Create directories for a given year/month range on a
+    specified base directory:
+
+    ```python
+    >>> from utils_ import create_dir
+    >>> base = "/path/to/base/directory"
+    >>> for year in range(2018, 2024):
+    ...     for month in range(1, 13):
+    ...         _ = create_dir(base, year, month)
+    ```
     """
 
     months = {
